@@ -1,0 +1,14 @@
+{
+    "name": "msztorc/image-processor",
+    "description": "ImageProcessor is a wrapper class for graphics libraries like GD2, ImageMagick and epeg.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Miroslaw Sztorc",
+            "email": "mirek.sztorc@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
