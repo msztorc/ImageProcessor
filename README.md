@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/msztorc/ImageProcessor.svg?branch=master)](https://travis-ci.org/msztorc/ImageProcessor)
+
 ## ImageProcessor Class
 
 ImageProcessor is a wrapper class for graphics libraries like GD2, ImageMagick and epeg. Implements often used methods of graphics manipulation.
