@@ -27,7 +27,7 @@
  * @author Mirosław Sztorc <miroslaw@sztorc.com>
  */
 
-namespace msztorc;
+namespace ImageProcessor;
 
 class ImageProcessor
 {
@@ -85,7 +85,7 @@ class ImageProcessor
          *
          * @var [type]
          */
-        private $imageFilter = Imagick::FILTER_LANCZOS;
+        private $imageFilter = \Imagick::FILTER_LANCZOS;
 
         /**
          * Constructor.
@@ -100,11 +100,11 @@ class ImageProcessor
             if ($imageFile != null && file_exists($imageFile)) {
                 $this->open($imageFile);
             } elseif ($imageFile != null) {
-                throw new Exception("File doesn't exists");
+                throw new \Exception("File doesn't exists");
             }
 
             if ($imageFile == null && $lib == 'imagick') {
-                $this->image = new Imagick();
+                $this->image = new \Imagick();
             }
         }
 
@@ -118,14 +118,14 @@ class ImageProcessor
         public function open($imageFile)
         {
             if (!file_exists($imageFile)) {
-                throw new Exception("File doesn't exists");
+                throw new \Exception("File doesn't exists");
             }
 
             $this->imageFile = $imageFile;
 
             list($this->imageWidth, $this->imageHeight, $this->imageType) = @getimagesize($this->imageFile);
             if ($this->imageWidth == 0 || $this->imageHeight == 0) {
-                throw new Exception('Error image size');
+                throw new \Exception('Error image size');
             }
 
             switch ($this->libType) {
@@ -137,14 +137,14 @@ class ImageProcessor
                         case IMAGETYPE_GIF:  $this->image = imagecreatefromgif($this->imageFile);  $this->imageExtension = 'gif'; break;
 
                         default:
-                            throw new Exception('Unsupported image format (only jpg/png/gif)');
+                            throw new \Exception('Unsupported image format (only jpg/png/gif)');
                     }
 
                 break;
                 case 'imagick':
 
                     if ($this->image == null) {
-                        $this->image = new Imagick();
+                        $this->image = new \Imagick();
                     }
 
                     $this->image->readImage($this->imageFile);
@@ -195,7 +195,7 @@ class ImageProcessor
         public function image()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             return $this->image;
@@ -209,7 +209,7 @@ class ImageProcessor
         private function _updateImageSize()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -235,7 +235,7 @@ class ImageProcessor
         public function width()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $width = 0;
@@ -261,7 +261,7 @@ class ImageProcessor
         public function height()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $height = 0;
@@ -287,7 +287,7 @@ class ImageProcessor
         public function type()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             return $this->imageType;
@@ -311,7 +311,7 @@ class ImageProcessor
         public function extension()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             return $this->imageExtension;
@@ -325,7 +325,7 @@ class ImageProcessor
         public function file()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             return $this->imageFile;
@@ -344,7 +344,7 @@ class ImageProcessor
         private function _gd_image_copy($width, $height, $left, $top)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $_img = imagecreatetruecolor($width, $height);
@@ -356,7 +356,7 @@ class ImageProcessor
             }
 
             if (!imagecopy($_img, $this->image, 0, 0, $left, $top, $width, $height)) {
-                throw new Exception('Error when copy image');
+                throw new \Exception('Error when copy image');
             }
 
             return $_img;
@@ -375,7 +375,7 @@ class ImageProcessor
         public function copy()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $clone = null;
@@ -403,7 +403,7 @@ class ImageProcessor
         private function _gd_image_resize($width, $height)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $_img = imagecreatetruecolor($width, $height);
@@ -414,7 +414,7 @@ class ImageProcessor
             }
 
             if (!imagecopyresampled($_img, $this->image, 0, 0, 0, 0, $width, $height, $this->imageWidth, $this->imageHeight)) {
-                throw new Exception('Error when resize image');
+                throw new \Exception('Error when resize image');
             }
 
             $this->image = $_img;
@@ -437,7 +437,7 @@ class ImageProcessor
         public function resize($width, $height, $aratio = true, $enlarge = false)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -494,7 +494,7 @@ class ImageProcessor
         public function crop($width, $height, $x, $y)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -504,7 +504,7 @@ class ImageProcessor
                 break;
                 case 'imagick':
                     if (!$this->image->cropImage($width, $height, $x, $y)) {
-                        throw new ImageException('Error when cropping (imagick)');
+                        throw new \Exception('Error when cropping (imagick)');
                     }
 
                 break;
@@ -523,7 +523,7 @@ class ImageProcessor
         public function brightness($threshold = 100)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -532,12 +532,12 @@ class ImageProcessor
                     $threshold = ($threshold < -255) ? -255 : (($threshold > 255) ? 255 : $threshold);
 
                     if (!imagefilter($this->image, IMG_FILTER_BRIGHTNESS, $threshold)) {
-                        throw new Exception('Error when brightness processing (gd2)');
+                        throw new \Exception('Error when brightness processing (gd2)');
                     }
                 break;
                 case 'imagick':
                     if (!$this->image->modulateImage($threshold, 100, 100)) {
-                        throw new ImageException('Error when processing negate (imagick)');
+                        throw new \Exception('Error when processing negate (imagick)');
                     }
 
                 break;
@@ -554,20 +554,20 @@ class ImageProcessor
         public function negative()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
                 case 'gd':
 
                     if (!imagefilter($this->image, IMG_FILTER_NEGATE)) {
-                        throw new Exception('Error when negative processing (gs2)');
+                        throw new \Exception('Error when negative processing (gs2)');
                     }
                 break;
                 case 'imagick':
 
                     if (!$this->image->negateImage(false)) {
-                        throw new ImageException('Error when processing negate (imagick)');
+                        throw new \Exception('Error when processing negate (imagick)');
                     }
 
                 break;
@@ -586,7 +586,7 @@ class ImageProcessor
         public function contrast($threshold = 0)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -596,13 +596,13 @@ class ImageProcessor
                     $threshold = ($threshold < -100) ? -100 : (($threshold > 100) ? 100 : $threshold);
 
                     if (!imagefilter($this->image, IMG_FILTER_CONTRAST, $threshold)) {
-                        throw new Exception('Error when contrast processing (gd2)');
+                        throw new \Exception('Error when contrast processing (gd2)');
                     }
                 break;
                 case 'imagick':
 
                     if (!$this->image->contrastImage(1)) {
-                        throw new ImageException('Error when processing contrast (imagick)');
+                        throw new \Exception('Error when processing contrast (imagick)');
                     }
 
                 break;
@@ -623,7 +623,7 @@ class ImageProcessor
         public function colorize($red, $green, $blue)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -638,14 +638,14 @@ class ImageProcessor
                     $blue = ($blue  < -255) ? -255 : (($blue  > 255) ? 255 : $blue);
 
                     if (!imagefilter($this->image, IMG_FILTER_COLORIZE, $red, $green, $blue)) {
-                        throw new Exception('Error when processing colorize (gd2)');
+                        throw new \Exception('Error when processing colorize (gd2)');
                     }
                 break;
                 case 'imagick':
                     $hex_color = sprintf('%02X%02X%02X', $red, $green, $blue);
 
                     if (!$this->image->colorizeImage('#'.$hex_color, 1.0)) {
-                        throw new ImageException('Error when processing colorize (imagick)');
+                        throw new \Exception('Error when processing colorize (imagick)');
                     }
 
                 break;
@@ -662,20 +662,20 @@ class ImageProcessor
         public function grayscale()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
                 case 'gd':
 
                     if (!imagefilter($this->image, IMG_FILTER_GRAYSCALE)) {
-                        throw new ImageException('Error when processing grayscale (gd2)');
+                        throw new \Exception('Error when processing grayscale (gd2)');
                     }
 
                 break;
                 case 'imagick':
-                    if (!$this->image->setImageColorSpace(Imagick::COLORSPACE_GRAY)) {
-                        throw new ImageException('Error when processing grayscale (imagick)');
+                    if (!$this->image->setImageColorSpace(\Imagick::COLORSPACE_GRAY)) {
+                        throw new \Exception('Error when processing grayscale (imagick)');
                     }
 
                 break;
@@ -692,7 +692,7 @@ class ImageProcessor
         public function sepia()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -705,7 +705,7 @@ class ImageProcessor
                 case 'imagick':
 
                     if (!$this->image->sepiaToneImage(83)) {
-                        throw new ImageException('Error when processing sepia (imagick)');
+                        throw new \Exception('Error when processing sepia (imagick)');
                     }
 
                 break;
@@ -722,7 +722,7 @@ class ImageProcessor
         public function mirror()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -760,7 +760,7 @@ class ImageProcessor
         public function flop()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -787,7 +787,7 @@ class ImageProcessor
         public function flip()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -816,7 +816,7 @@ class ImageProcessor
         public function rotate($angle)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -848,7 +848,7 @@ class ImageProcessor
         public function autorotate()
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -907,21 +907,21 @@ class ImageProcessor
                     $orientation = $this->image->getImageOrientation();
 
                     switch ($orientation) {
-                        case Imagick::ORIENTATION_BOTTOMRIGHT:
+                        case \Imagick::ORIENTATION_BOTTOMRIGHT:
                             $this->image->rotateimage('#000', 180); // rotate 180 degrees 
                         break;
 
-                        case Imagick::ORIENTATION_RIGHTTOP:
+                        case \Imagick::ORIENTATION_RIGHTTOP:
                             $this->image->rotateimage('#000', 90); // rotate 90 degrees CW 
                         break;
 
-                        case Imagick::ORIENTATION_LEFTBOTTOM:
+                        case \Imagick::ORIENTATION_LEFTBOTTOM:
                             $this->image->rotateimage('#000', -90); // rotate 90 degrees CCW 
                         break;
                     }
 
                     // Now that it's auto-rotated, make sure the EXIF data is correct in case the EXIF gets saved with the image! 
-                    $this->image->setImageOrientation(Imagick::ORIENTATION_TOPLEFT);
+                    $this->image->setImageOrientation(\Imagick::ORIENTATION_TOPLEFT);
 
                 break;
             }
@@ -941,7 +941,7 @@ class ImageProcessor
         public function display($quality = 100)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             switch ($this->libType) {
@@ -1003,7 +1003,7 @@ class ImageProcessor
         public function save($filename, $quality = 100)
         {
             if ($this->image == null) {
-                throw new Exception('Image not loaded');
+                throw new \Exception('Image not loaded');
             }
 
             $quality = (int) $quality;
@@ -1019,7 +1019,7 @@ class ImageProcessor
                             if (imagejpeg($this->image, $filename, $quality)) {
                                 $this->imageFile = $filename;
                             } else {
-                                throw new Exception('Save error (GD2/JPEG)');
+                                throw new \Exception('Save error (GD2/JPEG)');
                             }
                         break;
 
@@ -1027,7 +1027,7 @@ class ImageProcessor
                             if (imagepng($this->image, $filename)) {
                                 $this->imageFile = $filename;
                             } else {
-                                throw new Exception('Save error (GD2/PNG)');
+                                throw new \Exception('Save error (GD2/PNG)');
                             }
                         break;
 
@@ -1035,7 +1035,7 @@ class ImageProcessor
                             if (imagegif($this->image, $filename)) {
                                 $this->imageFile = $filename;
                             } else {
-                                throw new Exception('Save error (GD2/GIF)');
+                                throw new \Exception('Save error (GD2/GIF)');
                             }
                         break;
                     }
@@ -1047,7 +1047,7 @@ class ImageProcessor
                     $this->image->setImageCompressionQuality($quality);
 
                     if (!$this->image->writeImage($filename)) {
-                        throw new Exception('Save error (Imagick)');
+                        throw new \Exception('Save error (Imagick)');
                     }
 
                 break;
@@ -1069,13 +1069,13 @@ class ImageProcessor
          *
          * @return bool
          */
-        public static function imagick_resize($infile, $outfile, $width, $height, $quality = 100, $aratio = true, $filter = Imagick::FILTER_LANCZOS)
+        public static function imagick_resize($infile, $outfile, $width, $height, $quality = 100, $aratio = true, $filter = \Imagick::FILTER_LANCZOS)
         {
             if (!file_exists($infile)) {
-                throw new Exception('File not found');
+                throw new \Exception('File not found');
             }
 
-            $image = new Imagick();
+            $image = new \Imagick();
 
             $image->readImage($infile);
 
@@ -1084,7 +1084,7 @@ class ImageProcessor
             if (strtolower($ext) == 'jpg' || strtolower($ext) == 'jpeg') {
                 $image->setImageFormat('jpg');
                 $image->setImageCompression(true);
-                $image->setImageCompression(Imagick::COMPRESSION_JPEG);
+                $image->setImageCompression(\Imagick::COMPRESSION_JPEG);
                 $image->setImageCompressionQuality($quality);
                 $image->setOption('jpeg:size', intval($width * 2).'x'.intval($height * 2));
             }
@@ -1130,7 +1130,7 @@ class ImageProcessor
         public static function epeg_resize($infile, $outfile, $width, $height, $quality = 100, $aratio = true)
         {
             if (!file_exists($infile)) {
-                throw new Exception('File not found');
+                throw new \Exception('File not found');
             }
 
             if ($aratio) {
