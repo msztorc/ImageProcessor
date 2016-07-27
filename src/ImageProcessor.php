@@ -510,6 +510,8 @@ class ImageProcessor
                 break;
             }
 
+	    $this->_updateImageSize();
+
             return $this;
         }
 
