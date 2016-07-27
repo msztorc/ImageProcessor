@@ -5,7 +5,7 @@ ImageProcessor is a wrapper class for graphics libraries like GD2, ImageMagick a
 ### Requirements
 - GD2 (php extension)
 - ImageMagick (PECL library)
-- EPEG (cli)
+- epeg (cli)
 
 #### Library support for object
 - GD2
@@ -13,7 +13,7 @@ ImageProcessor is a wrapper class for graphics libraries like GD2, ImageMagick a
 
 #### Library support for static methods
 - ImageMagick (some functionality like resize, crop, effects)
-- EPEG (cli, only for epeg_resize method)
+- epeg (cli, only for epeg_resize method)
 
 
 ### Usage Instructions
@@ -22,8 +22,8 @@ Objected
 ```PHP
 
 $obj = new ImageProcessor('imagick', 'file.jpg'); // or 'gd' (default)
-$obj->image_resize(100, 50, true, false); //width, height, aspect_ratio, enlarge
-$obj->image_clear(); //free memory
+$obj->resize(100, 50, true, false); //width, height, aspect_ratio, enlarge
+$obj->clear(); //free memory
 
 ```
 
@@ -33,7 +33,7 @@ ImageProcessor::imagick_resize('input-file.jpg', 'output-file.jpg', 800, 800); /
 
 ```
 
-Staticly image resize using EPEG (cli)
+Staticly image resize using epeg (cli)
 ```PHP
 ImageProcessor::epeg_resize('input-file.jpg', 'output-file.jpg', 800, 800); //infile, outfile, width, height, quality = 100, aspect_ratio = true
 
@@ -48,42 +48,42 @@ $obj2 = new ImageProcessor('gd', 'infile.jpg');
 
 // clean constructor
 $obj3 = new ImageProcessor(); //gd is default argument in constructor
-$obj3->image_open('infile.jpg'); //open image
+$obj3->open('infile.jpg'); //open image
 
 ```
 #### Base methods
 Grayscale
 ```PHP
-$obj->image_grayscale();
+$obj->grayscale();
 ```
 Negative
 ```PHP
-$obj->image_negative();
+$obj->negative();
 ```
 Brightness
 ```PHP
-$obj->image_brightness($threshold); // +/- 100
+$obj->brightness($threshold); // +/- 100
 ```
 Colorize
 ```PHP
-$obj->image_colorize(80,90,60); //rgb
+$obj->colorize(80,90,60); //rgb
 ```
 Sepia
 ```PHP
-$obj->image_sepia();
+$obj->sepia();
 ```
 Custom Sepia
 ```PHP
-$obj->image_grayscale();
-$obj->image_colorize(90,60,40);
+$obj->grayscale();
+$obj->colorize(90,60,40);
 ```
 Display image
 ```PHP
-$obj->image_display();
+$obj->display();
 ```
 Save image
 ```PHP
-$obj->image_save('outfile.jpg', 99); //filename, JPEG quality
+$obj->save('outfile.jpg', 99); //filename, JPEG quality
 ```
 You can also work on image resource
 ```PHP
@@ -95,8 +95,8 @@ $obj->open_image('imagick', $file);
 //$obj->image()->setOption('jpeg:size', '300x300'); //uncomment this if you want increase speed of resize
 $obj->image()->resizeImage(300,300, imagick::FILTER_LANCZOS, 1, true);
 
-$obj->image_save($outfile, 75);
-$obj->image_display();
+$obj->save($outfile, 75);
+$obj->display();
 ```
 
 ### Resize Performance
@@ -104,21 +104,21 @@ $obj->image_display();
 
 JPEG image resize time from 5906x5906 to 1181x1181.
 
-	FILTER_POINT: 0.334532976151 seconds
-	FILTER_BOX: 0.777871131897 seconds
-	FILTER_TRIANGLE: 1.3695909977 seconds
-	FILTER_HERMITE: 1.35866093636 seconds
-	FILTER_HANNING: 4.88722896576 seconds
-	FILTER_HAMMING: 4.88665103912 seconds
-	FILTER_BLACKMAN: 4.89026689529 seconds
-	FILTER_GAUSSIAN: 1.93553304672 seconds
-	FILTER_QUADRATIC: 1.93322920799 seconds
-	FILTER_CUBIC: 2.58396601677 seconds
-	FILTER_CATROM: 2.58508896828 seconds
-	FILTER_MITCHELL: 2.58368492126 seconds
-	FILTER_LANCZOS: 3.74232912064 seconds
-	FILTER_BESSEL: 4.03305602074 seconds
-	FILTER_SINC: 4.90098690987 seconds 
+	FILTER_POINT: 0.334532976151 sec
+	FILTER_BOX: 0.777871131897 sec
+	FILTER_TRIANGLE: 1.3695909977 sec
+	FILTER_HERMITE: 1.35866093636 sec
+	FILTER_HANNING: 4.88722896576 sec
+	FILTER_HAMMING: 4.88665103912 sec
+	FILTER_BLACKMAN: 4.89026689529 sec
+	FILTER_GAUSSIAN: 1.93553304672 sec
+	FILTER_QUADRATIC: 1.93322920799 sec
+	FILTER_CUBIC: 2.58396601677 sec
+	FILTER_CATROM: 2.58508896828 sec
+	FILTER_MITCHELL: 2.58368492126 sec
+	FILTER_LANCZOS: 3.74232912064 sec
+	FILTER_BESSEL: 4.03305602074 sec
+	FILTER_SINC: 4.90098690987 sec
 
 CATROM has a very similar result to LANCZOS, but is significantly faster.
 ! Note! Above results are only demonstrative. Execution time depends upon the system configuration (processor speed, size of memory, etc...)
@@ -135,14 +135,19 @@ or using ImageProcessor class
 
 $obj = new ImageProcessor('imagick');
 $obj->image()->setOption('jpeg:size', '300x300');
-$obj->image_open($file);
+$obj->open($file);
 
 $obj->image()->resizeImage(300,300, imagick::FILTER_LANCZOS, 1, true);
 
-$obj->image_save($outfile, 99);
+$obj->save($outfile, 99);
 
 //$time_end = microtime(true);
 //$time = $time_end - $time_start;
 //echo $time ."\n\n";
 ```
 
+### Links
+- epeg (https://github.com/mattes/epeg)
+
+### License
+MIT
