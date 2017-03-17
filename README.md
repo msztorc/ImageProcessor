@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/msztorc/ImageProcessor.svg?branch=master)](https://travis-ci.org/msztorc/ImageProcessor)
+[![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](http://www.opensource.org/licenses/MIT)
 
 ## ImageProcessor Class
 
