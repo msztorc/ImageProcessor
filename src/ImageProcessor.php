@@ -76,16 +76,16 @@ class ImageProcessor
         /**
          * Image extension.
          *
-         * @var null
+         * @var string
          */
         private $imageExtension = null;
 
         /**
          * Imagick filter constant.
          *
-         * @var [type]
+         * @var \Imagick::FILTER_LANCZOS
          */
-        private $imageFilter = \Imagick::FILTER_LANCZOS;
+        private $imageFilter = null;
 
         /**
          * Constructor.
@@ -104,6 +104,9 @@ class ImageProcessor
             }
 
             if ($imageFile == null && $lib == 'imagick') {
+
+                $this->imageFilter = \Imagick::FILTER_LANCZOS;
+
                 $this->image = new \Imagick();
             }
         }
